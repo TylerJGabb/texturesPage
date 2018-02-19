@@ -7,18 +7,18 @@ if (!document) {
 var renderer = new THREE.WebGLRenderer();
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 1000);
-camera.position.set(2, 1, 2);
+camera.position.set(1, 0.4, 1);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 //     C O N T R O L S   A R E    T U R N E D   O F F    F O R    T H I S
-//var controls = new THREE.OrbitControls(camera);//You don't need to know anything about this;
-//controls.enablePan = false; //stops you from being able to change position of camera
+var controls = new THREE.OrbitControls(camera);//You don't need to know anything about this;
+controls.enablePan = false; //stops you from being able to change position of camera
 //=======================================================================================
 
-var light = new THREE.PointLight(0xFFFFFF, 1, 50)
+var light = new THREE.PointLight(0xFFFFFF, 2.5, 50)
 light.position.set(20, 20, 10);
-var ambient = new THREE.AmbientLight(0x404040, 1);
+var ambient = new THREE.AmbientLight(0x404040, 0.05);
 scene.add(light)
 scene.add(ambient);
 
@@ -45,7 +45,7 @@ var mat = new THREE.MeshPhongMaterial({
     map: textureLoader.load('images/earth/earthcloudmap.jpg'),//cloudTexture,
     alphaMap: textureLoader.load('images/earth/earthCloudAlpha.jpg'),//alphaTexture,
     side: THREE.DoubleSide,
-    opacity: 0.9,
+    opacity: 0.8,
     transparent: true,
     depthWrite: false
 })
@@ -65,14 +65,16 @@ scene.add(space);
 
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
+controls.autoRotate = true;
+controls.autoRotateSpeed = 1;
+controls.target = new THREE.Vector3(0,0,0)
 delta = 0;
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
     earthMesh.rotateY(Math.PI / 1900)
     cloudMesh.rotateY(Math.PI / 1700);
-    camera.position.x = 2 * Math.sin(delta);
-    camera.position.z = 2 * Math.cos(delta);
+    controls.update();
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     delta += 2 * Math.PI / 10000;
 }
