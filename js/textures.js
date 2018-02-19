@@ -22,22 +22,28 @@ var ambient = new THREE.AmbientLight(0x404040, 1);
 scene.add(light)
 scene.add(ambient);
 
+/**
+ * Texture loader object, used per advice given by THREE.js documentation instead of THREE.ImageUtils.loadTexture()
+ */
+var textureLoader = new THREE.TextureLoader();
+
 var geom = new THREE.SphereGeometry(0.5, 32, 32);
 var mat = new THREE.MeshPhongMaterial();
 var earthMesh = new THREE.Mesh(geom, mat);
 
-mat.map = THREE.ImageUtils.loadTexture('images/earth/earthmapSquare.jpg')//earth
-mat.bumpMap = THREE.ImageUtils.loadTexture('images/earth/earthbumpSquare.jpg');//bumps
+mat.map = textureLoader.load('images/earth/earthmapSquare.jpg')//earth
+mat.bumpMap = textureLoader.load('images/earth/earthbumpSquare.jpg');//bumps
 mat.bumpScale = 0.5;
-mat.specularMap = THREE.ImageUtils.loadTexture('images/earth/earthspecSquare.jpg');//reflectivity
+mat.specularMap = textureLoader.load('images/earth/earthspecSquare.jpg');//reflectivity
 mat.specular = new THREE.Color(0xAAAAAA);//what color should areas be when reflecting light;
+
 
 //======== C L O U D S =======
 
 var geom = new THREE.SphereGeometry(0.51, 32, 32);
 var mat = new THREE.MeshPhongMaterial({
-    map: THREE.ImageUtils.loadTexture('images/earth/earthcloudmap.jpg'),//cloudTexture,
-    alphaMap: THREE.ImageUtils.loadTexture('images/earth/earthCloudAlpha.jpg'),//alphaTexture,
+    map: textureLoader.load('images/earth/earthcloudmap.jpg'),//cloudTexture,
+    alphaMap: textureLoader.load('images/earth/earthCloudAlpha.jpg'),//alphaTexture,
     side: THREE.DoubleSide,
     opacity: 0.9,
     transparent: true,
@@ -52,7 +58,7 @@ scene.add(earthMesh);
 // ==================   B A C K G R O U N D ==============================
 var geom = new THREE.CubeGeometry(90, 90,90);
 var mat = new THREE.MeshBasicMaterial();
-mat.map = THREE.ImageUtils.loadTexture('images/star-field-background.jpg');
+mat.map = textureLoader.load('images/star-field-background.jpg');//THREE.ImageUtils.loadTexture('images/star-field-background.jpg');
 mat.side = THREE.BackSide;
 var space = new THREE.Mesh(geom, mat);
 scene.add(space);
@@ -63,8 +69,8 @@ delta = 0;
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    earthMesh.rotateY(Math.PI / 2000)
-    cloudMesh.rotateY(Math.PI / 1800);
+    earthMesh.rotateY(Math.PI / 1900)
+    cloudMesh.rotateY(Math.PI / 1700);
     camera.position.x = 2 * Math.sin(delta);
     camera.position.z = 2 * Math.cos(delta);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
