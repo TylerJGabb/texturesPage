@@ -34,7 +34,15 @@ var earthMesh = new THREE.Mesh(geom, mat);
 mat.map = textureLoader.load('images/earth/earthmapSquare.jpg')//earth
 mat.bumpMap = textureLoader.load('images/earth/earthbumpSquare.jpg');//bumps
 mat.bumpScale = 0.5;
-mat.specularMap = textureLoader.load('images/earth/earthspecSquare.jpg');//reflectivity
+
+var specImg = document.createElement('img');
+specImg.src = 'images/earth/earthSpecSquare.jpg';
+var texture = new THREE.Texture(specImg);
+specImg.addEventListener('load', function (e) {
+    texture.needsUpdate = true
+});
+
+mat.specularMap = texture;//textureLoader.load('images/earth/earthspecSquare.jpg');//reflectivity
 mat.specular = new THREE.Color(0xAAAAAA);//what color should areas be when reflecting light;
 
 
