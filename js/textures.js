@@ -7,7 +7,7 @@ if (!document) {
 var renderer = new THREE.WebGLRenderer();
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 1000);
-camera.position.set(10, 5, 10);
+camera.position.set(2, 1, 2);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -28,18 +28,26 @@ scene.add(earthMesh);
 
 
 
-var img = document.createElement('img')
-img.src = 'images/earth/earthmap1k.jpg';
-var texture = new THREE.Texture(img);
-img.addEventListener('load', function (event) { texture.needsUpdate = true; });
+//var img = document.createElement('img')
+//img.src = 'images/earth/earthmap1k.jpg';
+//document.body.appendChild(img);
+//var texture = new THREE.Texture(img);
+//img.addEventListener('load', function (event) { texture.needsUpdate = true; });
+//mat.map = texture;
 
-mat.map = texture;
-//mat.map = THREE.ImageUtils.loadTexture('images/earth/earthmap1k.jpg')
+mat.map = THREE.ImageUtils.loadTexture('images/earth/earthmap1k.jpg')
+mat.bumpMap = THREE.ImageUtils.loadTexture('images/earth/earthbump1k.jpg');
+mat.specularMap = THREE.ImageUtils.loadTexture('images/earth/earthspec1k.jpg');
+mat.specular = new THREE.Color('grey');
+mat.bumpScale = 0.5;
+
+
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
+    earthMesh.rotateY(Math.PI/1000)
 }
 
 animate();
