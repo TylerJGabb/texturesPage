@@ -40,7 +40,7 @@ earthMapImg.addEventListener('load', function (e) {
 mat.map = earthMapTexture;//textureLoader.load('images/earth/earthmapSquare.jpg')//earth
 
 var earthBumpImg = document.createElement('img');
-earthBumpImg.src = 'images/earth/earthbumpSquare.jpg';
+earthBumpImg.src = 'images/earth/earthBumpSquare.jpg';
 var earthBumpTexture = new THREE.Texture(earthBumpImg);
 earthBumpImg.addEventListener('load', function (e) {
     earthBumpTexture.needsUpdate = true;
