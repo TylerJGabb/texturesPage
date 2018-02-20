@@ -31,18 +31,32 @@ var geom = new THREE.SphereGeometry(0.5, 32, 32);
 var mat = new THREE.MeshPhongMaterial();
 var earthMesh = new THREE.Mesh(geom, mat);
 
-mat.map = textureLoader.load('images/earth/earthmapSquare.jpg')//earth
-mat.bumpMap = textureLoader.load('images/earth/earthbumpSquare.jpg');//bumps
+var earthMapImg = document.createElement('img');
+earthMapImg.src = 'images/earth/earthmapSquare.jpg';
+var earthMapTexture = new THREE.Texture(earthMapImg);
+earthMapImg.addEventListener('load', function (e) {
+    earthMapTexture.needsUpdate = true;
+})
+mat.map = earthMapTexture;//textureLoader.load('images/earth/earthmapSquare.jpg')//earth
+
+var earthBumpImg = document.createElement('img');
+earthBumpImg.src = 'images/earth/earthbumpSquare.jpg';
+var earthBumpTexture = new THREE.Texture(earthBumpImg);
+earthBumpImg.addEventListener('load', function (e) {
+    earthBumpTexture.needsUpdate = true;
+});
+
+mat.bumpMap = earthBumpTexture;//textureLoader.load('images/earth/earthbumpSquare.jpg');//bumps
 mat.bumpScale = 0.5;
 
 var specImg = document.createElement('img');
 specImg.src = 'images/earth/earthSpecSquare.jpg';
-var texture = new THREE.Texture(specImg);
+var earthSpecTexture = new THREE.Texture(specImg);
 specImg.addEventListener('load', function (e) {
-    texture.needsUpdate = true
+    earthSpecTexture.needsUpdate = true
 });
 
-mat.specularMap = texture;//textureLoader.load('images/earth/earthspecSquare.jpg');//reflectivity
+mat.specularMap = earthSpecTexture;//textureLoader.load('images/earth/earthspecSquare.jpg');//reflectivity
 mat.specular = new THREE.Color(0xAAAAAA);//what color should areas be when reflecting light;
 
 
