@@ -31,43 +31,61 @@ var geom = new THREE.SphereGeometry(0.5, 32, 32);
 var mat = new THREE.MeshPhongMaterial();
 var earthMesh = new THREE.Mesh(geom, mat);
 
+//Creating textures using domElements and their 'onLoad' functions prevents github pages from failing to load the resources
+//by the time they are used. It waits for the resource to be loaded, then updates the texture WHEN that happens
 var earthMapImg = document.createElement('img');
 earthMapImg.src = 'images/earth/earthmapSquare.jpg';
 var earthMapTexture = new THREE.Texture(earthMapImg);
 earthMapImg.addEventListener('load', function (e) {
     earthMapTexture.needsUpdate = true;
 })
-mat.map = earthMapTexture;//textureLoader.load('images/earth/earthmapSquare.jpg')//earth
+mat.map = earthMapTexture;//textureLoader.load('images/earth/earthmapSquare.jpg')
 
+//Bumps
 var earthBumpImg = document.createElement('img');
 earthBumpImg.src = 'images/earth/earthBumpSquare.jpg';
 var earthBumpTexture = new THREE.Texture(earthBumpImg);
 earthBumpImg.addEventListener('load', function (e) {
     earthBumpTexture.needsUpdate = true;
 });
-
-mat.bumpMap = earthBumpTexture;//textureLoader.load('images/earth/earthbumpSquare.jpg');//bumps
+mat.bumpMap = earthBumpTexture;//textureLoader.load('images/earth/earthbumpSquare.jpg');
 mat.bumpScale = 0.5;
 
+//Specular
 var specImg = document.createElement('img');
 specImg.src = 'images/earth/earthSpecSquare.jpg';
 var earthSpecTexture = new THREE.Texture(specImg);
 specImg.addEventListener('load', function (e) {
     earthSpecTexture.needsUpdate = true
 });
-
 mat.specularMap = earthSpecTexture;//textureLoader.load('images/earth/earthspecSquare.jpg');//reflectivity
 mat.specular = new THREE.Color(0xAAAAAA);//what color should areas be when reflecting light;
 
 
 //======== C L O U D S =======
+//Map
+var cloudMapImg = document.createElement('img');
+cloudMapImg.src = 'images/earth/earthcloudmap.jpg'
+cloudMapTexture = new THREE.Texture(cloudMapImg);
+cloudMapImg.addEventListener('load', function (e) {
+    cloudMapTexture.needsUpdate = true;
+})
+
+//Alpha
+var cloudAlphaImg = document.createElement('img');
+cloudAlphaImg.src = 'images/earth/earthCloudAlpha.jpg'
+cloudAlphaTexture = new THREE.Texture(cloudAlphaImg);
+cloudAlphaImg.addEventListener('load', function (e) {
+    cloudAlphaTexture.needsUpdate = true;
+})
+
 
 var geom = new THREE.SphereGeometry(0.51, 32, 32);
 var mat = new THREE.MeshPhongMaterial({
-    map: textureLoader.load('images/earth/earthcloudmap.jpg'),//cloudTexture,
-    alphaMap: textureLoader.load('images/earth/earthCloudAlpha.jpg'),//alphaTexture,
+    map: cloudMapTexture,//textureLoader.load('images/earth/earthcloudmap.jpg'),//cloudTexture,
+    alphaMap: cloudAlphaTexture,//textureLoader.load('images/earth/earthCloudAlpha.jpg'),//alphaTexture,
     side: THREE.DoubleSide,
-    opacity: 0.8,
+    opacity: 1.2,
     transparent: true,
     depthWrite: false
 })
@@ -80,7 +98,15 @@ scene.add(earthMesh);
 // ==================   B A C K G R O U N D ==============================
 var geom = new THREE.CubeGeometry(90, 90,90);
 var mat = new THREE.MeshBasicMaterial();
-mat.map = textureLoader.load('images/star-field-background.jpg');//THREE.ImageUtils.loadTexture('images/star-field-background.jpg');
+var spaceImg = document.createElement('img');
+spaceImg.src = 'images/star-field-background.jpg';
+var spaceTexture = new THREE.Texture(spaceImg);
+spaceImg.addEventListener('load', function (e) {
+    spaceTexture.needsUpdate = true;
+})
+
+
+mat.map = spaceTexture;//textureLoader.load('images/star-field-background.jpg');//THREE.ImageUtils.loadTexture('images/star-field-background.jpg');
 mat.side = THREE.BackSide;
 var space = new THREE.Mesh(geom, mat);
 scene.add(space);
@@ -88,7 +114,7 @@ scene.add(space);
 
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 controls.autoRotate = true;
-controls.autoRotateSpeed = 1;
+controls.autoRotateSpeed = 0.2;
 controls.target = new THREE.Vector3(0,0,0)
 delta = 0;
 function animate() {
