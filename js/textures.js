@@ -7,7 +7,7 @@ if (!document) {
 var renderer = new THREE.WebGLRenderer();
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 1000);
-camera.position.set(1, 0.4, 1);
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -104,14 +104,36 @@ var spaceTexture = new THREE.Texture(spaceImg);
 spaceImg.addEventListener('load', function (e) {
     spaceTexture.needsUpdate = true;
 })
-
-
 mat.map = spaceTexture;//textureLoader.load('images/star-field-background.jpg');//THREE.ImageUtils.loadTexture('images/star-field-background.jpg');
 mat.side = THREE.BackSide;
 var space = new THREE.Mesh(geom, mat);
 scene.add(space);
+//========================= B A C K G R O U N D    D O N E   ========================================//
 
+//================== M  O  O  N  ======================================================//
+var geom = new THREE.SphereGeometry(0.1,32,32)
+var mat = new THREE.MeshPhongMaterial();
+var moonMapImg = document.createElement('img');
+moonMapImg.src = 'images/moon/map.jpg';
+var moonMapTexture = new THREE.Texture(moonMapImg);
+moonMapImg.addEventListener('load',function(e){
+    moonMapTexture.needsUpdate = true;
+})
+mat.map = moonMapTexture;
+var moon = new THREE.Mesh(geom,mat);
+moon.update = function(delta){
+    moon.position.x = 2*Math.cos(delta)
+    moon.position.z = 2*Math.sin(delta);
+}
+scene.add(moon);
 
+//========================================================
+
+var sp = makeTextSprite("Earth", "#00FFFF");
+scene.add(sp);
+sp.position.set(0, 0.6, 0);
+
+camera.position.set(1*2.5, 0.4*2.5, 1*2.5);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.2;
@@ -122,6 +144,7 @@ function animate() {
     renderer.render(scene, camera);
     earthMesh.rotateY(Math.PI / 1900)
     cloudMesh.rotateY(Math.PI / 1700);
+    moon.update(delta*5);
     controls.update();
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     delta += 2 * Math.PI / 10000;
